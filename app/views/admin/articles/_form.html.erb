@@ -10,7 +10,6 @@
     </div>
   <% end %>
 
-  <!-- ฟอร์มสำหรับ Content -->
   <%= form.fields_for :content do |content_form| %>
     <div class="mb-4">
       <%= content_form.label :title, class: 'block text-sm font-semibold text-gray-700' %>
@@ -27,7 +26,6 @@
       <%= content_form.file_field :photo, class: 'mt-1 p-2 w-full border border-gray-300 rounded-lg' %>
     </div>
 
-    <!-- ฟิลด์เลือกสถานะ (ใช้ enum) -->
     <div class="mb-4">
       <%= content_form.label :state, class: 'block text-sm font-semibold text-gray-700' %>
       <%= content_form.select :state, Content.states.keys.map { |state| [state.humanize, state] }, { include_blank: 'Select state' }, class: 'mt-1 p-2 w-full border border-gray-300 rounded-lg' %>

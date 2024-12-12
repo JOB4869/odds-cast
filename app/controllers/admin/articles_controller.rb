@@ -28,13 +28,10 @@ class Admin::ArticlesController < ApplicationController
     respond_to do |format|
       if @admin_article.valid?
         @admin_article.save
-        # หากสถานะของ Content ยังเป็น draft, เปลี่ยนสถานะเป็น in_review
-        @admin_article.content.submit_for_review! if @admin_article.content.draft?
-        NotificationMailer.send_submission_notification(@admin_article).deliver_now
-        format.html { redirect_to @admin_article, notice: "Article was successfully created." }
+        format.html { redirect_to @admin_article, notice: 'Admin article was successfully created.' }
         format.json { render :show, status: :created, location: @admin_article }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new }
         format.json { render json: @admin_article.errors, status: :unprocessable_entity }
       end
     end
@@ -82,7 +79,11 @@ class Admin::ArticlesController < ApplicationController
     @admin_article = Admin::Article.find(params[:id])
   end
 
-  def admin_article_params
-    params.require(:admin_article).permit(:title, :description, :photo, content_attributes: [:title, :description, :photo, :state])
+  
+    def admin_article_params
+      params.require(:admin_article).permit(
+        :some_attribute, # อื่น ๆ ที่ไม่ใช่ content_attributes
+        content_attributes: [:title, :description, :photo, :state]
+      )
   end
 end
